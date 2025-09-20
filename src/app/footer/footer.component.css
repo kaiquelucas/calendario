@@ -1,0 +1,26 @@
+.footer {
+  background-color: #111; /* preto */
+  color: #fff;
+  padding: 15px 0;
+  text-align: center;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.3); /* sombra para separar da página */
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.footer-link {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.footer-link:hover {
+  color: #1da1f2; /* azul claro no hover */
+  text-shadow: 0 0 5px rgba(29,161,242,0.7); /* leve glow */
+}

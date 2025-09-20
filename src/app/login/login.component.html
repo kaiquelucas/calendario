@@ -1,0 +1,18 @@
+<div class="marcacoes-container">
+  <h2>Login</h2>
+
+  <form (ngSubmit)="logarUsuario()">
+    <input type="text" placeholder="Email" [(ngModel)]="email" name="email" required />
+    <input type="password" placeholder="Senha" [(ngModel)]="senha" name="senha" required />
+    <button type="submit">Entrar</button>
+  </form>
+
+  <p class="mensagem" *ngIf="mensagem">{{ mensagem }}</p>
+
+  <p>Não tem conta? 
+  <a [routerLink]="'/cadastro'" class="link-cadastro">Cadastre-se</a>
+</p>
+
+  
+  <app-cadastro *ngIf="mostrarCadastro"></app-cadastro>
+</div>

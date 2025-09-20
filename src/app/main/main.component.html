@@ -1,0 +1,76 @@
+<div class="calendar-container">
+  <div class="calendar-header">
+    <button class="nav-btn" (click)="mudarMes(-1)">&#10094;</button>
+    <h2 class="cal-title">{{ monthName }}</h2>
+    <button class="nav-btn" (click)="mudarMes(1)">&#10095;</button>
+  </div>
+
+  <div class="calendar-weekdays">
+    <div *ngFor="let day of weekDays">{{ day }}</div>
+  </div>
+
+  <div class="calendar-body">
+    <div class="calendar-day" *ngFor="let day of daysInMonth"
+      [class.today]="day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()"
+      [class.feriado]="ehFeriado(day)" (click)="clicarDia(day)">
+      <span class="day-number">{{ day }}</span>
+
+      <!-- bolinha de aviso -->
+
+      <span class="day-dot"
+      *ngIf="getMarcacoesDoDia(day).length > 0"
+      [style.border-color]="getDotColor(day) || '#007bff'">
+</span>
+
+    </div>
+  </div>
+</div>
+
+<!-- POPUP -->
+<div class="dia-popup" [class.show]="diaSelecionado !== null">
+  <h3 class="popup-title" *ngIf="diaSelecionado !== null">
+    {{ diaSelecionado }}/{{ currentMonth+1 }}/{{ currentYear }}
+  </h3>
+
+  <!-- Lista do dia (sempre mostra algo: lista ou "vazio") -->
+  <div class="marcacoes-dia" *ngIf="diaSelecionado !== null">
+    <ng-container *ngIf="getMarcacoesDoDia(diaSelecionado).length; else vazio">
+      <ul>
+        <li *ngFor="let m of getMarcacoesDoDia(diaSelecionado); index as i">
+          <input type="checkbox" [(ngModel)]="m.feito" (change)="alternarFeito(m)" />
+          <span class="color-dot" [style.backgroundColor]="m.cor"></span>
+          <span class="evento" [class.done]="m.feito">
+            {{ m.hora || '--:--' }} — {{ m.evento }}
+          </span>
+          <button class="mini-btn" type="button" (click)="deletarMarcacao(m, i)">Excluir</button>
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #vazio>
+      <div style="color:#6b7280;">Sem marcações para este dia.</div>
+    </ng-template>
+  </div>
+
+  <!-- Form -->
+  <form (ngSubmit)="salvarMarcacao()" class="popup-form" *ngIf="diaSelecionado !== null">
+    <label>
+      Hora
+      <input type="time" [(ngModel)]="hora" name="hora" required />
+    </label>
+
+    <label>
+      Descrição
+      <input type="text" [(ngModel)]="evento" name="evento" placeholder="Digite aqui..." required />
+    </label>
+
+    <label>
+      Cor
+      <input type="color" [(ngModel)]="cor" name="cor" />
+    </label>
+
+    <div class="popup-buttons">
+      <button type="submit" class="btn save-btn">Salvar</button>
+      <button type="button" class="btn cancel-btn" (click)="fecharPopup()">Fechar</button>
+    </div>
+  </form>
+</div>

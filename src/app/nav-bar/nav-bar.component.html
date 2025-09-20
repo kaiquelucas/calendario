@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+  <div class="container">
+    <ul class="navbar-nav mx-auto d-flex flex-row gap-3 align-items-center">
+      <li class="nav-item d-flex align-items-center">
+        <a class="nav-link custom-link" [routerLink]="'/'" routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact:true}">Home</a>
+        <span class="divider">|</span>
+      </li>
+      
+      <li class="nav-item">
+        <a class="nav-link custom-link" [routerLink]="'/checkList'" routerLinkActive="active">Check-List</a>
+      </li>
+      <li class="nav-item" *ngIf="usuarioLogado">
+        <button class="btn-logout" (click)="logout()">Sair</button>
+      </li>
+    </ul>
+  </div>
+</nav>

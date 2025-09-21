@@ -1,55 +1,45 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class UsuarioService {
-  private apiUrl = 'https://calendario-back-w81o.onrender.com/api/Usuario';
+  private apiUrl = `${environment.apiBaseUrl}/api/Usuario`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // Cadastrar usuário (não precisa de token)
+  // ---- helpers ----
+  private authHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return token ? new HttpHeaders({ Authorization: `Bearer ${token}` }) : new HttpHeaders();
+  }
+
+  // ---- públicos ----
   cadastrar(nome: string, email: string, senha: string): Observable<any> {
     return this.http.post(`${this.apiUrl}`, { nome, email, senha });
   }
 
-  // Login
   logar(email: string, senha: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, { email, senha });
   }
 
-  // Logout
-  logout() {
+  logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('usuarioId');
   }
 
-  // Função para pegar headers com token
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
-
-  // GET usuários (protegido)
   getUsuarios(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get(`${this.apiUrl}`, { headers });
+    return this.http.get(`${this.apiUrl}`, { headers: this.authHeaders() });
   }
 
-  // DELETE usuário (protegido)
   deleteUsuario(id: number): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.request('delete', `${this.apiUrl}`, {
-      headers,
-      body: { id }
-    });
+    // Se seu backend espera DELETE com body, troque por:
+    // return this.http.request('delete', `${this.apiUrl}`, { headers: this.authHeaders(), body: { id } });
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.authHeaders() });
   }
 
-  // Exemplo de outro endpoint protegido
   atualizarUsuario(id: number, dados: any): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.put(`${this.apiUrl}/${id}`, dados, { headers });
+    return this.http.put(`${this.apiUrl}/${id}`, dados, { headers: this.authHeaders() });
   }
 }

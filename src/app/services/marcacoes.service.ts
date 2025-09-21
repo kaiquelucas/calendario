@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { Marcacoes } from '../Model/marcacoes';
 
 @Injectable({ providedIn: 'root' })
 export class MarcacoesService {
-  private apiUrl = "https://calendario-back-w81o.onrender.com/api/Marcacoes/minhas";
+  private apiUrl = `${environment.apiBaseUrl}/api/Marcacoes`;
 
   constructor(private http: HttpClient) {}
 
@@ -13,7 +14,7 @@ export class MarcacoesService {
     return this.http.get<Marcacoes[]>(`${this.apiUrl}/minhas`);
   }
 
-  criarMarcacao(marcacao: Marcacoes): Observable<Marcacoes> {
+  criarMarcacao(marcacao: any): Observable<Marcacoes> {
     return this.http.post<Marcacoes>(this.apiUrl, marcacao);
   }
 
@@ -21,7 +22,7 @@ export class MarcacoesService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  atualizarMarcacoes(id: number, marcacao: Marcacoes): Observable<Marcacoes> {
-    return this.http.put<Marcacoes>(`${this.apiUrl}/${id}`, marcacao);
+  atualizarMarcacoes(id: number, marcacoes: Marcacoes): Observable<Marcacoes> {
+    return this.http.put<Marcacoes>(`${this.apiUrl}/${id}`, marcacoes);
   }
 }

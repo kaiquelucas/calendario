@@ -1,46 +1,29 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Marcacoes } from './Model/marcacoes';
+import { environment } from 'src/environments/environment';
 
-import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+@Injectable({ providedIn: 'root' })
+export class MarcacoesService {
+  // base SEM /minhas
+  private apiUrl = `${environment.apiBaseUrl}/api/Marcacoes`;
 
-import { MainComponent } from './main/main.component';
-import { LoginComponent } from './login/login.component';
-import { CadastroComponent } from './login/cadastro/cadastro.component';
+  constructor(private http: HttpClient) {}
 
-// se você tem estes componentes, mantenha; se não tiver, remova das declarations:
-import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { FooterComponent } from './footer/footer.component';
+  getMinhasMarcacoes(): Observable<Marcacoes[]> {
+    return this.http.get<Marcacoes[]>(`${this.apiUrl}/minhas`);
+  }
 
-import { AuthGuard } from './auth.guard';
-import { AuthInterceptor } from './auth.interceptor';
-import { AuthService } from './auth.service';
+  criarMarcacao(marcacao: any): Observable<Marcacoes> {
+    return this.http.post<Marcacoes>(this.apiUrl, marcacao);
+  }
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    MainComponent,
-    LoginComponent,
-    CadastroComponent,
-    NavBarComponent,
-    FooterComponent
-    // NÃO declare MarcacoesComponent aqui
-  ],
-  imports: [
-    BrowserModule,       // disponibiliza 'titlecase' (via CommonModule)
-    FormsModule,         // habilita [(ngModel)]
-    RouterModule,        // garante routerLink/router-outlet nos templates
-    HttpClientModule,
-    AppRoutingModule
-  ],
-  providers: [
-    AuthService,
-    AuthGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
-  bootstrap: [AppComponent]
-})
-export class AppModule {}
+  deletarMarcacoes(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  atualizarMarcacoes(id: number, marcacoes: Marcacoes): Observable<Marcacoes> {
+    return this.http.put<Marcacoes>(`${this.apiUrl}/${id}`, marcacoes);
+  }
+}

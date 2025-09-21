@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class UsuarioService {
-  private apiUrl = 'http://localhost:5035/api/Usuario';
+  private apiUrl = 'https://calendario-back-w81o.onrender.com/api/Usuario';
 
   constructor(private http: HttpClient) { }
 

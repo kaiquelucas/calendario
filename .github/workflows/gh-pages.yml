@@ -13,9 +13,11 @@ jobs:
         with:
           node-version: '20'
       - run: npm ci
+      # se o nome do repo do front for "calendario", está certo /calendario/
       - run: npm run build -- --configuration production --base-href /calendario/
-      - run: cp -f dist/calendario/browser/index.html dist/calendario/browser/404.html
+      # SPA fallback (sem /browser)
+      - run: cp -f dist/calendario/index.html dist/calendario/404.html
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/calendario/browser
+          folder: dist/calendario

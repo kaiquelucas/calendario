@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Marcacoes } from './Model/marcacoes';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MarcacoesService {
   private apiUrl = 'https://calendario-back-w81o.onrender.com/api/Marcacoes/minhas';
-
+  private apiUrll = `${environment.apiBaseUrl}/api/Marcacoes/minhas`;
   constructor(private http: HttpClient) {}
 
   getMinhasMarcacoes(): Observable<Marcacoes[]> {

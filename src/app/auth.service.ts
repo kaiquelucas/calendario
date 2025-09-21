@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private tokenKey = 'token';
   private usuarioKey = 'usuarioId';
-  private loggedInSubject = new BehaviorSubject<boolean>(!!this.getToken());
+  private loggedInSubject = new BehaviorSubject<boolean>(!!localStorage.getItem(this.tokenKey));
   public loggedIn$ = this.loggedInSubject.asObservable();
 
   constructor(private router: Router, private http: HttpClient) {}
@@ -32,14 +33,16 @@ export class AuthService {
 
   logout() {
     this.removeToken();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']); // se sua rota de login for '', use '/'
   }
 
+  
   logoutServer(): Observable<any> {
-    return this.http.post('/api/auth/logout', {}).pipe(
+    const url = `${environment.apiBaseUrl}/api/Usuario/logout`; // ajuste se seu back tiver outro caminho
+    return this.http.post(url, {}).pipe(
       tap(() => {
         this.removeToken();
-        this.router.navigate(['/login']);
+        this.router.navigate(['/']);
       })
     );
   }

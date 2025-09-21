@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../services/usuario.service';
-import { AuthService } from 'src/app/auth.service'; 
-
+import { AuthService } from '../auth.service'; 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,20 +13,14 @@ export class LoginComponent {
   mensagem = '';
   mostrarCadastro = false;
 
-  // injeta AuthService aqui
   constructor(
     private router: Router,
     private usuarioService: UsuarioService,
     private authService: AuthService
-  ) { }
+  ) {}
 
-  abrirCadastro() {
-    this.mostrarCadastro = true;
-  }
-
-  fecharCadastro() {
-    this.mostrarCadastro = false;
-  }
+  abrirCadastro() { this.mostrarCadastro = true; }
+  fecharCadastro() { this.mostrarCadastro = false; }
 
   logarUsuario(event?: Event) {
     event?.preventDefault();
@@ -37,11 +30,7 @@ export class LoginComponent {
         const usuarioId = res.usuarioId ?? res.UsuarioId;
         if (token) {
           this.authService.setToken(token, usuarioId);
-          console.log('token salvo antes de navegar:', this.authService.getToken());
-
-          // navegue para a rota que você usa para o Main.
-          // troque '/' por '/main' se sua rota realmente for 'main'
-          this.router.navigate(['/']);
+          this.router.navigate(['/main']); // << garanta a rota
         } else {
           this.mensagem = 'Resposta inválida do servidor';
         }

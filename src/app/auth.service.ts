@@ -33,12 +33,12 @@ export class AuthService {
 
   logout() {
     this.removeToken();
-    this.router.navigate(['/']); // se sua rota de login for '', use '/'
+    this.router.navigate(['/']); 
   }
 
   
   logoutServer(): Observable<any> {
-    const url = `${environment.apiBaseUrl}/api/Usuario/logout`; // ajuste se seu back tiver outro caminho
+    const url = `${environment.apiBaseUrl}/api/Usuario/logout`;
     return this.http.post(url, {}).pipe(
       tap(() => {
         this.removeToken();

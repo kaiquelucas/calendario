@@ -5,7 +5,7 @@ import { Marcacoes } from '../Model/marcacoes';
 
 @Injectable({ providedIn: 'root' })
 export class MarcacoesService {
-  private apiUrl = "http://localhost:5035/api/Marcacoes";
+  private apiUrl = "https://calendario-back-w81o.onrender.com/api/Marcacoes/minhas";
 
   constructor(private http: HttpClient) {}
 
